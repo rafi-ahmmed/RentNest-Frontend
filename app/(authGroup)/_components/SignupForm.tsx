@@ -25,19 +25,33 @@ import z from "zod"
 import { signupSchema } from "@/schemas/auth.schema"
 import { useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { useTransition } from "react"
+import { signupAction } from "../_actions/authActions"
+import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 type SignupFromData = z.infer<typeof signupSchema>
 
 export function SignupForm() {
+  const [isPending, startTransition] = useTransition()
+  const router = useRouter()
   const {
     register,
     handleSubmit,
-    watch,
+    reset,
     formState: { errors },
   } = useForm({ resolver: zodResolver(signupSchema) })
 
   const onsubmit = (data: SignupFromData) => {
-    console.log(data)
+    startTransition(async () => {
+      const result = await signupAction(data)
+
+      if (result?.success) {
+        reset()
+        toast.success("Signup successful")
+        router.push("/")
+      }
+    })
   }
 
   return (
@@ -191,8 +205,9 @@ export function SignupForm() {
           <Button
             type="submit"
             className="group mt-4 h-11 w-full gap-2 font-semibold shadow-sm transition-all hover:shadow-md"
+            disabled={isPending}
           >
-            <span>Sign up</span>
+            <span>{isPending ? "Loading" : "Sign up"}</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
         </form>

@@ -31,6 +31,7 @@ export function LoginForm() {
     register,
     handleSubmit,
     formState: { errors },
+    reset,
   } = useForm<LoginFormData>({
     resolver: zodResolver(loginSchema),
   })
@@ -40,6 +41,7 @@ export function LoginForm() {
       const result = await loginAction(data)
 
       if (result.success) {
+        reset()
         toast.success("Login Completed")
         router.replace("/")
       } else if (!result.success) {
