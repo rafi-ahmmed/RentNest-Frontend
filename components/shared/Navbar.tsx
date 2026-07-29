@@ -1,3 +1,4 @@
+"use client"
 import Link from "next/link"
 import {
   Sun,
@@ -20,6 +21,9 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
+import { getMe } from "@/services/getme"
+import { IUser } from "@/lib/types"
+import { Logout } from "@/app/(authGroup)/_actions/authActions"
 
 // Navigation Links Array
 const navLinks = [
@@ -42,16 +46,27 @@ const dropdownItems = [
     href: "/dashboard",
     icon: LayoutDashboard,
     iconColor: "text-primary",
+    action: "dashboard",
   },
   {
     title: "Profile",
     href: "/profile",
     icon: User,
     iconColor: "text-muted-foreground",
+    action: "profile",
   },
 ]
 
-function Navbar() {
+function Navbar({ user }: { user: IUser }) {
+  console.log("user profile==", user)
+  const handleUserMenuAction = async (action: string) => {
+    console.log(action)
+
+    if (action === "logout") {
+      await Logout()
+    }
+  }
+
   return (
     <header className="sticky top-0 z-50 w-full border-b border-primary/10 bg-primary/3 backdrop-blur supports-backdrop-filter:bg-primary/2">
       <div className="container mx-auto flex h-16 items-center justify-between px-4 sm:px-8">
@@ -65,7 +80,6 @@ function Navbar() {
           </span>
         </Link>
 
-        {/* Middle: Navigation Links (Desktop screen visible only - md:flex) */}
         <nav className="hidden items-center gap-1 text-sm font-medium md:flex">
           {navLinks.map((link) => {
             return (
@@ -91,92 +105,103 @@ function Navbar() {
             <Sun className="h-5 w-5 text-amber-500" />
           </Button> */}
 
+          {user ? (
+            <DropdownMenu>
+              <DropdownMenuTrigger className="outline-none">
+                <div className="relative h-10 w-10 cursor-pointer rounded-full ring-2 ring-primary/20 transition-all hover:ring-primary/50">
+                  <Avatar className="h-9 w-9">
+                    <AvatarImage
+                      src={
+                        user.image || "https://i.ibb.co.com/fYrk3K68/user-1.png"
+                      }
+                      alt="User Avatar"
+                    />
+                    <AvatarFallback className="bg-primary/10 font-semibold text-primary">
+                      RA
+                    </AvatarFallback>
+                  </Avatar>
+                </div>
+              </DropdownMenuTrigger>
+
+              <DropdownMenuContent className="w-56" align="end">
+                {/* User Info Header */}
+                <DropdownMenuGroup>
+                  <DropdownMenuLabel className="font-normal">
+                    <div className="flex flex-col space-y-1">
+                      <p className="text-sm leading-none font-medium text-foreground">
+                        {user?.name || "User name"}
+                      </p>
+                      <p className="truncate text-xs leading-none text-muted-foreground">
+                        {user?.email || "siyam@example.com"}
+                      </p>
+                    </div>
+                  </DropdownMenuLabel>
+                </DropdownMenuGroup>
+
+                <DropdownMenuSeparator />
+
+                <DropdownMenuGroup className="md:hidden">
+                  {navLinks.map((link) => {
+                    const Icon = link.icon
+                    return (
+                      <DropdownMenuItem key={link.title} className="p-0">
+                        <Link
+                          href={link.href}
+                          className="flex w-full cursor-pointer items-center gap-2 px-2 py-1.5 font-medium"
+                        >
+                          <Icon className="h-4 w-4 text-muted-foreground" />
+                          <span>{link.title}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    )
+                  })}
+                </DropdownMenuGroup>
+
+                {/* Main Dashboard & Profile Links */}
+                <DropdownMenuGroup>
+                  {dropdownItems.map((item) => {
+                    const Icon = item.icon
+                    return (
+                      <DropdownMenuItem
+                        onClick={() => handleUserMenuAction(item.action)}
+                        key={item.title}
+                        className="p-0"
+                      >
+                        <Link
+                          href={item.href}
+                          className="flex w-full cursor-pointer items-center gap-2 px-2 py-1.5"
+                        >
+                          <Icon className={`h-4 w-4 ${item.iconColor}`} />
+                          <span>{item.title}</span>
+                        </Link>
+                      </DropdownMenuItem>
+                    )
+                  })}
+                </DropdownMenuGroup>
+
+                <DropdownMenuSeparator />
+
+                {/* Logout Option */}
+                <DropdownMenuItem
+                  onClick={() => handleUserMenuAction("logout")}
+                  className="flex cursor-pointer items-center gap-2 text-destructive focus:text-destructive"
+                >
+                  <LogOut className="h-4 w-4" />
+                  <span>Log out</span>
+                </DropdownMenuItem>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          ) : (
+            <Button className="gap-2 px-3.5 py-3.5 font-medium">
+              <Link href="/login" className="flex items-center gap-2">
+                Login
+              </Link>
+            </Button>
+          )}
+
           {/* Login Button */}
-          <Button className="gap-2 font-medium px-3.5 py-3.5">
-            <Link href="/login" className="flex items-center gap-2">
-             
-              Login
-            </Link>
-          </Button>
 
           {/* User Profile Dropdown Menu */}
-          <DropdownMenu>
-            <DropdownMenuTrigger className="outline-none">
-              <div className="relative h-10 w-10 cursor-pointer rounded-full ring-2 ring-primary/20 transition-all hover:ring-primary/50">
-                <Avatar className="h-9 w-9">
-                  <AvatarImage
-                    src="https://github.com/shadcn.png"
-                    alt="User Avatar"
-                  />
-                  <AvatarFallback className="bg-primary/10 font-semibold text-primary">
-                    RA
-                  </AvatarFallback>
-                </Avatar>
-              </div>
-            </DropdownMenuTrigger>
-
-            <DropdownMenuContent className="w-56" align="end">
-              {/* User Info Header */}
-              <DropdownMenuGroup>
-                <DropdownMenuLabel className="font-normal">
-                  <div className="flex flex-col space-y-1">
-                    <p className="text-sm leading-none font-medium text-foreground">
-                      Rafi Ahmmed Siyam
-                    </p>
-                    <p className="truncate text-xs leading-none text-muted-foreground">
-                      siyam@example.com
-                    </p>
-                  </div>
-                </DropdownMenuLabel>
-              </DropdownMenuGroup>
-
-              <DropdownMenuSeparator />
-
-              {/* Mobile/Small Screens Navigation (md:hidden - ডেক্সটপে হাইড থাকবে, মোবাইলে দেখাবে) */}
-              <DropdownMenuGroup className="md:hidden">
-                {navLinks.map((link) => {
-                  const Icon = link.icon
-                  return (
-                    <DropdownMenuItem key={link.title} className="p-0">
-                      <Link
-                        href={link.href}
-                        className="flex w-full cursor-pointer items-center gap-2 px-2 py-1.5 font-medium"
-                      >
-                        <Icon className="h-4 w-4 text-muted-foreground" />
-                        <span>{link.title}</span>
-                      </Link>
-                    </DropdownMenuItem>
-                  )
-                })}
-              </DropdownMenuGroup>
-
-              {/* Main Dashboard & Profile Links */}
-              <DropdownMenuGroup>
-                {dropdownItems.map((item) => {
-                  const Icon = item.icon
-                  return (
-                    <DropdownMenuItem key={item.title} className="p-0">
-                      <Link
-                        href={item.href}
-                        className="flex w-full cursor-pointer items-center gap-2 px-2 py-1.5"
-                      >
-                        <Icon className={`h-4 w-4 ${item.iconColor}`} />
-                        <span>{item.title}</span>
-                      </Link>
-                    </DropdownMenuItem>
-                  )
-                })}
-              </DropdownMenuGroup>
-
-              <DropdownMenuSeparator />
-
-              {/* Logout Option */}
-              <DropdownMenuItem className="flex cursor-pointer items-center gap-2 text-destructive focus:text-destructive">
-                <LogOut className="h-4 w-4" />
-                <span>Log out</span>
-              </DropdownMenuItem>
-            </DropdownMenuContent>
-          </DropdownMenu>
         </div>
       </div>
     </header>

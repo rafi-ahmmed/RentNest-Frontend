@@ -17,10 +17,16 @@ import { SubmitHandler, useForm } from "react-hook-form"
 import z from "zod"
 import { loginSchema } from "@/schemas/auth.schema"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { loginAction } from "../_actions/authActions"
+import { useTransition } from "react"
+import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 type LoginFormData = z.infer<typeof loginSchema>
 
 export function LoginForm() {
+  const [isPending, startTransition] = useTransition()
+  const router = useRouter()
   const {
     register,
     handleSubmit,
@@ -29,8 +35,19 @@ export function LoginForm() {
     resolver: zodResolver(loginSchema),
   })
 
-  const onSubmit: SubmitHandler<LoginFormData> = (data) => {
-    console.log(data)
+  const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
+    startTransition(async () => {
+      const result = await loginAction(data)
+
+      if (result.success) {
+        toast.success("Login Completed")
+        router.replace("/")
+      } else if (!result.success) {
+        toast.error(result.message)
+      } else {
+        toast.error("Something went wrong!")
+      }
+    })
   }
 
   return (
@@ -95,7 +112,7 @@ export function LoginForm() {
               <Input
                 id="password"
                 type="password"
-                placeholder="••••••••"
+                placeholder="Enter your password"
                 className="h-11 border-input/80 bg-background/50 pl-9 focus-visible:ring-primary/30"
                 {...register("password")}
               />
@@ -111,9 +128,10 @@ export function LoginForm() {
           {/* Submit Button */}
           <Button
             type="submit"
+            disabled={isPending}
             className="group mt-4 h-10 w-full gap-2 font-semibold shadow-sm transition-all hover:shadow-md"
           >
-            <span>Log in</span>
+            <span>{isPending ? "signing in" : "Log in"}</span>
             <ArrowRight className="h-4 w-4 transition-transform group-hover:translate-x-1" />
           </Button>
         </form>
