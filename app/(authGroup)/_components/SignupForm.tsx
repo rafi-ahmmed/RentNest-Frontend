@@ -50,6 +50,8 @@ export function SignupForm() {
         reset()
         toast.success("Signup successful")
         router.push("/")
+      } else if (!result.success) {
+        toast.error(result?.message || "Something went wrong!")
       }
     })
   }

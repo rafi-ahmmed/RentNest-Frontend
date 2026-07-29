@@ -108,7 +108,7 @@ function Navbar({ user }: { user: IUser }) {
           {user ? (
             <DropdownMenu>
               <DropdownMenuTrigger className="outline-none">
-                <div className="relative h-10 w-10 cursor-pointer rounded-full ring-2 ring-primary/20 transition-all hover:ring-primary/50">
+                <div className="relative cursor-pointer rounded-full ring-2 ring-primary/20 transition-all hover:ring-primary/50">
                   <Avatar className="h-9 w-9">
                     <AvatarImage
                       src={

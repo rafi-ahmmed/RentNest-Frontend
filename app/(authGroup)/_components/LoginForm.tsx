@@ -45,7 +45,7 @@ export function LoginForm() {
         toast.success("Login Completed")
         router.replace("/")
       } else if (!result.success) {
-        toast.error(result.message)
+        toast.error(result.message || "Something went wrong!")
       } else {
         toast.error("Something went wrong!")
       }

@@ -13,8 +13,8 @@ import {
 
 function Footer() {
   return (
-    <footer className="w-full border-t border-primary/10 bg-primary/[0.03] text-foreground transition-colors">
-      <div className="container mx-auto px-4 py-12 sm:px-8 md:py-16">
+    <footer className="w-full border-t border-primary/10 bg-primary/3 text-foreground transition-colors">
+      <div className="container mx-auto px-4 py-12 sm:px-8 md:py-12">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 md:gap-8 lg:gap-14">
           {/* Column 1: Brand Info & Bio */}
           <div className="flex flex-col space-y-4">
