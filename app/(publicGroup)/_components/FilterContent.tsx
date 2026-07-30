@@ -16,7 +16,6 @@ import {
 } from "@/components/ui/select"
 import { ICategory, ICategoryResponse } from "@/lib/types"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
-import { number } from "zod"
 import { Input } from "@/components/ui/input"
 import { useDebouncedCallback } from "use-debounce"
 
@@ -37,8 +36,8 @@ export function FilterContent({
 }) {
   const pathname = usePathname()
   const router = useRouter()
-  const params = new URLSearchParams()
   const searchParams = useSearchParams()
+  const params = new URLSearchParams(searchParams)
   const [type, setType] = useState(searchParams.get("type") ?? "Select a type")
   const [selectedAmenities, setSelectedAmenities] = useState<string[]>(() => {
     const amenities = searchParams.get("amenities")
@@ -85,6 +84,13 @@ export function FilterContent({
     router.push(`${pathname}?${params.toString()}`)
   }
 
+  const handleReset = () => {
+    setType("Select a type")
+    setSelectedAmenities([])
+    setMaxPrice("")
+    router.push(pathname)
+  }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -94,11 +100,12 @@ export function FilterContent({
           <span>Filter Options</span>
         </div>
         <Button
+          onClick={handleReset}
           variant="ghost"
           size="sm"
-          className="h-auto gap-1 p-0 text-xs text-muted-foreground hover:text-primary"
+          className="h-auto gap-1.5 p-0 text-xs font-semibold text-foreground transition-colors hover:text-destructive"
         >
-          <RotateCcw className="h-3 w-3" />
+          <RotateCcw className="h-3.5 w-3.5 text-destructive" />
           <span>Reset</span>
         </Button>
       </div>

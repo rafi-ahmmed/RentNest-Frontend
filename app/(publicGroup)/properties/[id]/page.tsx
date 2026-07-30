@@ -64,7 +64,7 @@ const PropertyDetails = async ({ params }: PropertyDetailsProps) => {
   return (
     <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto max-w-6xl space-y-8 px-4">
-        {/* 🔙 Navigation & Actions Bar */}
+        {/* Navigation & Actions Bar */}
         <div className="flex items-center justify-between">
           <Button
             variant="ghost"
@@ -77,14 +77,14 @@ const PropertyDetails = async ({ params }: PropertyDetailsProps) => {
             </Link>
           </Button>
 
-          <div className="flex items-center gap-2">
+          {/* <div className="flex items-center gap-2">
             <Button variant="outline" size="icon" className="rounded-full">
               <Share2 className="h-4 w-4" />
             </Button>
             <Button variant="outline" size="icon" className="rounded-full">
               <Heart className="h-4 w-4" />
             </Button>
-          </div>
+          </div> */}
         </div>
 
         {/* Image Gallery Grid */}
