@@ -16,6 +16,9 @@ import {
 } from "@/components/ui/select"
 import { ICategory, ICategoryResponse } from "@/lib/types"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
+import { number } from "zod"
+import { Input } from "@/components/ui/input"
+import { useDebouncedCallback } from "use-debounce"
 
 const AMENITIES_LIST = [
   "Parking",
@@ -32,12 +35,46 @@ export function FilterContent({
 }: {
   categories: ICategoryResponse
 }) {
-  const [priceRange, setPriceRange] = useState<number[]>([100000])
   const pathname = usePathname()
   const router = useRouter()
   const params = new URLSearchParams()
   const searchParams = useSearchParams()
   const [type, setType] = useState(searchParams.get("type") ?? "Select a type")
+  const [selectedAmenities, setSelectedAmenities] = useState<string[]>(() => {
+    const amenities = searchParams.get("amenities")
+    return amenities ? amenities.split(",") : []
+  })
+  const [maxPrice, setMaxPrice] = useState(searchParams.get("maxPrice") ?? "")
+
+  const handleMaxPrice = useDebouncedCallback((value: string) => {
+    if (value) {
+      params.set("maxPrice", value)
+    } else {
+      params.delete("maxPrice")
+    }
+    router.push(`${pathname}?${params.toString()}`)
+  }, 500)
+
+  const handleAmenities = (amenity: string, checked: boolean) => {
+    console.log(amenity, checked)
+    let updateAmenities: string[]
+
+    if (checked) {
+      updateAmenities = [...selectedAmenities, amenity]
+    } else {
+      updateAmenities = selectedAmenities.filter((item) => item !== amenity)
+    }
+
+    setSelectedAmenities(updateAmenities)
+
+    if (updateAmenities.length > 0) {
+      params.set("amenities", updateAmenities.join(","))
+    } else {
+      params.delete("amenities")
+    }
+
+    router.push(`${pathname}?${params.toString()}`)
+  }
 
   const handlePropertyCategory = (value: string) => {
     if (value !== "none") {
@@ -47,6 +84,7 @@ export function FilterContent({
     }
     router.push(`${pathname}?${params.toString()}`)
   }
+
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -98,27 +136,36 @@ export function FilterContent({
         </Select>
       </div>
 
-      {/* Price Range Slider */}
-      <div className="space-y-3">
-        <div className="flex items-center justify-between">
-          <Label className="text-xs font-semibold text-muted-foreground uppercase">
-            Max Price
-          </Label>
-          <span className="text-xs font-bold text-primary">
-            ৳{(priceRange?.[0] ?? 100000).toLocaleString()} / mo
-          </span>
-        </div>
-        <Slider
-          value={priceRange}
+      <div className="space-y-2">
+        <Label
+          htmlFor="maxPrice"
+          className="text-xs font-semibold text-muted-foreground uppercase"
+        >
+          Enter Max Price
+        </Label>
 
-          min={10000}
-          max={150000}
-          step={5000}
-          className="cursor-pointer"
-        />
-        <div className="flex justify-between text-[10px] text-muted-foreground">
-          <span>৳10,000</span>
-          <span>৳150,000+</span>
+        <div className="relative flex items-center">
+          <span className="absolute left-3 text-sm font-semibold text-muted-foreground select-none">
+            ৳
+          </span>
+
+          <Input
+            id="maxPrice"
+            type="number"
+            placeholder="e.g. 50000"
+            value={maxPrice}
+            onChange={(e) => {
+              handleMaxPrice(e.target.value)
+              setMaxPrice(e.target.value)
+            }}
+            className="pr-12 pl-8 text-sm font-medium"
+            min={0}
+            step={2000}
+          />
+
+          <span className="absolute right-3 text-xs text-muted-foreground select-none">
+            / mo
+          </span>
         </div>
       </div>
 
@@ -130,7 +177,14 @@ export function FilterContent({
         <div className="space-y-2">
           {AMENITIES_LIST.map((amenity) => (
             <div key={amenity} className="flex items-center space-x-2 text-sm">
-              <Checkbox id={`amenity-${amenity}`} />
+              <Checkbox
+                className={"cursor-pointer"}
+                checked={selectedAmenities.includes(amenity)}
+                onCheckedChange={(checked) => {
+                  handleAmenities(amenity, checked)
+                }}
+                id={`amenity-${amenity}`}
+              />
               <label
                 htmlFor={`amenity-${amenity}`}
                 className="cursor-pointer text-sm leading-none font-medium text-foreground/80"
