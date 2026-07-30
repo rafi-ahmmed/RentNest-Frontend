@@ -88,7 +88,7 @@ const PropertyDetails = async ({ params }: PropertyDetailsProps) => {
         </div>
 
         {/* Image Gallery Grid */}
-        <div className="grid h-87.5 grid-cols-1 gap-4 overflow-hidden rounded-2xl shadow-xs md:h-[420px] md:grid-cols-3">
+        <div className="grid h-87.5 grid-cols-1 gap-4 overflow-hidden rounded-2xl shadow-xs md:h-105 md:grid-cols-3">
           <div className="relative h-full bg-muted md:col-span-2">
             <Image
               src={mainImage}

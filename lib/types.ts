@@ -14,3 +14,8 @@ export type IUserResponse = {
   message: string
   data: IUser
 }
+
+export interface ErrorProps {
+  error: Error & { digest?: string }
+  reset: () => void
+}

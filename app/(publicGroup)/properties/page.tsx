@@ -9,10 +9,11 @@ import { PropertyList } from "../_components/PropertyList"
 import { getAllProperties } from "../_actions/getAllProperties"
 import { PropertyCardSkeleton } from "../_components/PropertyCardSkeleton"
 
-export default async function PropertiesPage() {
-  //   const properties = await getAllProperties()
-  //   console.log(properties)
+export type ISearchParams = {
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>
+}
 
+export default async function PropertiesPage({ searchParams }: ISearchParams) {
   return (
     <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4">
@@ -53,10 +54,8 @@ export default async function PropertiesPage() {
           {/* Property Grid List */}
           <div className="lg:col-span-3">
             <Suspense fallback={<PropertyCardSkeleton />}>
-              <PropertyList />
+              <PropertyList searchParams={searchParams} />
             </Suspense>
-
-            {/* <PropertyCardSkeleton/> */}
           </div>
         </div>
       </div>
