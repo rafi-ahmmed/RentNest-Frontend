@@ -14,6 +14,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select"
+import { ICategory, ICategoryResponse } from "@/lib/types"
+import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
 const AMENITIES_LIST = [
   "Parking",
@@ -25,9 +27,26 @@ const AMENITIES_LIST = [
   "Wifi",
 ]
 
-export function FilterContent() {
+export function FilterContent({
+  categories,
+}: {
+  categories: ICategoryResponse
+}) {
   const [priceRange, setPriceRange] = useState<number[]>([100000])
+  const pathname = usePathname()
+  const router = useRouter()
+  const params = new URLSearchParams()
+  const searchParams = useSearchParams()
+  const [type, setType] = useState(searchParams.get("type") ?? "Select a type")
 
+  const handlePropertyCategory = (value: string) => {
+    if (value !== "none") {
+      params.set("type", value)
+    } else {
+      params.delete("type")
+    }
+    router.push(`${pathname}?${params.toString()}`)
+  }
   return (
     <div className="space-y-6">
       {/* Header */}
@@ -46,34 +65,18 @@ export function FilterContent() {
         </Button>
       </div>
 
-      {/* Location */}
+      {/* Property category */}
       <div className="space-y-2">
         <Label className="text-xs font-semibold text-muted-foreground uppercase">
-          Location
+          Filter by category
         </Label>
-        <Select defaultValue="all">
-          <SelectTrigger className="w-full">
-            <div className="flex items-center gap-2">
-              <MapPin className="h-4 w-4 text-muted-foreground" />
-              <SelectValue placeholder="Select Location" />
-            </div>
-          </SelectTrigger>
-          <SelectContent>
-            <SelectItem value="all">All Locations</SelectItem>
-            <SelectItem value="gulshan">Gulshan</SelectItem>
-            <SelectItem value="banani">Banani</SelectItem>
-            <SelectItem value="dhanmondi">Dhanmondi</SelectItem>
-            <SelectItem value="uttara">Uttara</SelectItem>
-          </SelectContent>
-        </Select>
-      </div>
-
-      {/* Property Type */}
-      <div className="space-y-2">
-        <Label className="text-xs font-semibold text-muted-foreground uppercase">
-          Property Type
-        </Label>
-        <Select defaultValue="all">
+        <Select
+          onValueChange={(value) => {
+            handlePropertyCategory(value as string)
+            setType(value as string)
+          }}
+          value={type}
+        >
           <SelectTrigger className="w-full">
             <div className="flex items-center gap-2">
               <Building2 className="h-4 w-4 text-muted-foreground" />
@@ -81,11 +84,16 @@ export function FilterContent() {
             </div>
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">All Types</SelectItem>
-            <SelectItem value="apartment">Apartment</SelectItem>
-            <SelectItem value="house">House</SelectItem>
-            <SelectItem value="studio">Studio</SelectItem>
-            <SelectItem value="commercial">Commercial</SelectItem>
+            <SelectItem value="none">Selected none</SelectItem>
+            {categories?.data.map((category: ICategory) => (
+              <SelectItem
+                className={"capitalize"}
+                key={category.id}
+                value={category.name}
+              >
+                {category.name}
+              </SelectItem>
+            ))}
           </SelectContent>
         </Select>
       </div>
@@ -102,7 +110,7 @@ export function FilterContent() {
         </div>
         <Slider
           value={priceRange}
-         
+
           min={10000}
           max={150000}
           step={5000}

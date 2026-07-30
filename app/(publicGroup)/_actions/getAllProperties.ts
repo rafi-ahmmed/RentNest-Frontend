@@ -34,10 +34,10 @@ export const getAllProperties = async (query: {
     `${process.env.BACKEND_API_URL}/api/properties?${params.toString()}`,
     {
       cache: "no-cache",
-      // next: {
-      //   revalidate: 60 * 60 * 6,
-      //   tags: ["all-properties"],
-      // },
+      next: {
+        revalidate: 60 * 60 * 6,
+        tags: ["all-properties"],
+      },
     }
   )
 

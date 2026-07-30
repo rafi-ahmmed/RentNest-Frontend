@@ -57,7 +57,7 @@ export function SignupForm() {
   }
 
   return (
-    <Card className="relative max-w-lg border border-primary/10 bg-card/95 p-2 shadow-xl backdrop-blur-sm sm:p-4 lg:w-lg">
+    <Card className="relative w-full max-w-xl border border-primary/10 bg-card/95 p-2 shadow-xl backdrop-blur-sm sm:p-4">
       <Link
         href="/"
         className="absolute top-4 right-4 rounded-full p-1.5 text-muted-foreground opacity-70 transition-all hover:bg-accent hover:text-foreground hover:opacity-100 focus:ring-2 focus:ring-primary/30 focus:outline-none"
@@ -90,7 +90,7 @@ export function SignupForm() {
               <Input
                 id="name"
                 type="text"
-                placeholder="Rafi Ahmmed Siyam"
+                placeholder="Enter your full name"
                 className="h-11 border-input/80 bg-background/50 pl-9 focus-visible:ring-primary/30"
                 {...register("name")}
               />

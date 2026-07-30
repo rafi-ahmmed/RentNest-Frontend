@@ -1,19 +1,20 @@
 import React, { Suspense } from "react"
-import { Search } from "lucide-react"
-
-import { Input } from "@/components/ui/input"
 import { Card } from "@/components/ui/card"
 import { MobileFilter } from "../_components/MobileFilter"
 import { FilterContent } from "../_components/FilterContent"
 import { PropertyList } from "../_components/PropertyList"
-import { getAllProperties } from "../_actions/getAllProperties"
 import { PropertyCardSkeleton } from "../_components/PropertyCardSkeleton"
+import PropertySearchBar from "../_components/PropertySearchBar"
+import { getAllCategories } from "../_actions/getAllCategories"
 
 export type ISearchParams = {
   searchParams: Promise<{ [key: string]: string | string[] | undefined }>
 }
 
 export default async function PropertiesPage({ searchParams }: ISearchParams) {
+  const categories = await getAllCategories()
+  console.log(categories)
+
   return (
     <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto px-4">
@@ -29,16 +30,10 @@ export default async function PropertiesPage({ searchParams }: ISearchParams) {
           </div>
 
           <div className="flex items-center gap-3">
-            <div className="relative w-full sm:w-72">
-              <Search className="absolute top-2.5 left-3 h-4 w-4 text-muted-foreground" />
-              <Input
-                placeholder="Search location or title..."
-                className="h-10 pl-9"
-              />
-            </div>
+            <PropertySearchBar />
 
-            {/* Mobile / Tablet Filter Button */}
-            <MobileFilter />
+            {/* Mobile */}
+            <MobileFilter categories={categories} />
           </div>
         </div>
 
@@ -47,7 +42,7 @@ export default async function PropertiesPage({ searchParams }: ISearchParams) {
           {/* Desktop Sidebar Filter */}
           <div className="hidden lg:col-span-1 lg:block">
             <Card className="sticky top-20 border-primary/10 p-6 shadow-sm">
-              <FilterContent />
+              <FilterContent categories={categories} />
             </Card>
           </div>
 

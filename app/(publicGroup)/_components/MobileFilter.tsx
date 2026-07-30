@@ -12,13 +12,16 @@ import {
   SheetTrigger,
 } from "@/components/ui/sheet"
 import { FilterContent } from "./FilterContent"
+import { ICategoryResponse } from "@/lib/types"
 
-
-export function MobileFilter() {
+export function MobileFilter({
+  categories,
+}: {
+  categories: ICategoryResponse
+}) {
   return (
     <div className="lg:hidden">
       <Sheet>
-        {/* asChild বা extra <Button> না দিয়ে সরাসরি SheetTrigger-এ ক্লাস দিন */}
         <SheetTrigger
           className={buttonVariants({
             variant: "outline",
@@ -30,12 +33,12 @@ export function MobileFilter() {
         </SheetTrigger>
         <SheetContent
           side="left"
-          className="w-[300px] overflow-y-auto sm:w-[360px] px-4"
+          className="w-75 overflow-y-auto px-4 sm:w-90"
         >
           <SheetHeader className="mb-4 text-left">
             <SheetTitle>Filter Properties</SheetTitle>
           </SheetHeader>
-          <FilterContent />
+          <FilterContent categories={categories} />
         </SheetContent>
       </Sheet>
     </div>

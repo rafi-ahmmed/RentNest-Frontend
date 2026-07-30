@@ -19,3 +19,14 @@ export interface ErrorProps {
   error: Error & { digest?: string }
   reset: () => void
 }
+
+export interface ICategory {
+  id: string
+  name: string
+}
+
+export interface ICategoryResponse {
+  success: boolean
+  message: string
+  data: ICategory[]
+}
