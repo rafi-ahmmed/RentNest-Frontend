@@ -1,4 +1,3 @@
-import React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import {
@@ -8,8 +7,6 @@ import {
   Maximize,
   CheckCircle2,
   ArrowLeft,
-  Share2,
-  Heart,
   ShieldCheck,
   Star,
   MessageSquare,
@@ -21,6 +18,7 @@ import { Badge } from "@/components/ui/badge"
 import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { getPropertyById } from "../../_actions/getPropertyById"
+import RequestBookingButton from "../../_components/RequestBookingButton"
 
 interface Review {
   rating: number
@@ -71,7 +69,10 @@ const PropertyDetails = async ({ params }: PropertyDetailsProps) => {
             size="sm"
             className="gap-2 text-muted-foreground hover:text-foreground"
           >
-            <Link href="/properties" className="flex items-center gap-1 text-green-500 font-medium text-sm">
+            <Link
+              href="/properties"
+              className="flex items-center gap-1 text-sm font-medium text-green-500"
+            >
               <ArrowLeft className="h-4 w-4" />
               <span>Back to Properties</span>
             </Link>
@@ -218,7 +219,6 @@ const PropertyDetails = async ({ params }: PropertyDetailsProps) => {
 
             <Separator />
 
-            {/* ⭐️ REVIEWS SECTION */}
             <div className="space-y-4 pt-2">
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-2">
@@ -322,15 +322,7 @@ const PropertyDetails = async ({ params }: PropertyDetailsProps) => {
                   </span>
                 </div>
 
-                <Button
-                  size="lg"
-                  className="w-full font-bold shadow-xs"
-                  disabled={!property.iaAvailable}
-                >
-                  {property.iaAvailable
-                    ? "Request Booking"
-                    : "Currently Booked"}
-                </Button>
+                <RequestBookingButton property={property} />
 
                 <p className="text-center text-[11px] text-muted-foreground">
                   You won&apos;t be charged yet

@@ -110,3 +110,30 @@ export interface PaymentRecord {
     }
   }
 }
+
+export interface Property {
+  id: string
+  title: string
+  description: string
+  rent: string
+  size: string
+  bedroom: number
+  bathroom: number
+  location: string
+  address: string
+  amenities: string[]
+  images: string[]
+  iaAvailable: boolean
+  category: {
+    name: string
+  }
+  landlord: {
+    email: string
+  }
+}
+
+export interface RentalRequestPayload {
+  propertyId: string
+  moveInDate: string
+  message: string
+}

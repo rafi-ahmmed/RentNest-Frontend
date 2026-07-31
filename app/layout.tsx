@@ -6,6 +6,8 @@ import { cn } from "@/lib/utils"
 import Navbar from "@/components/shared/Navbar"
 import Footer from "@/components/shared/Footer"
 import { Toaster } from "sonner"
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query"
+import Providers from "./providers"
 
 const geist = Geist({ subsets: ["latin"], variable: "--font-sans" })
 
@@ -19,6 +21,7 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const queryClient = new QueryClient()
   return (
     <html
       lang="en"
@@ -32,8 +35,7 @@ export default function RootLayout({
     >
       <body>
         <main className=" ">
-          <ThemeProvider>{children}</ThemeProvider>
-          <Toaster position="top-right" richColors />
+          <Providers>{children}</Providers>
         </main>
       </body>
     </html>

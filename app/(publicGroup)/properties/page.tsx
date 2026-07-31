@@ -13,7 +13,6 @@ export type ISearchParams = {
 
 export default async function PropertiesPage({ searchParams }: ISearchParams) {
   const categories = await getAllCategories()
-  console.log(categories)
 
   return (
     <div className="min-h-screen bg-background py-8">
