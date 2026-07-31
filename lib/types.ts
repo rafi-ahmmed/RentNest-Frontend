@@ -36,3 +36,41 @@ export interface ICategoryResponse {
   message: string
   data: ICategory[]
 }
+
+interface ApiResponse {
+  success: boolean
+  message: string
+  meta: {
+    total: number
+    approved: number
+    pending: number
+    completed: number
+    active: number
+  }
+  data: RentalRequest[]
+}
+
+export interface RentalRequest {
+  id: string
+  message: string
+  moveInDate: string
+  status: "APPROVED" | "ACTIVE" | "COMPLETED" | "PENDING" | "REJECTED" | string
+  tenantId: string
+  propertyId: string
+  createdAt: string
+  updatedAt: string
+  tenant: {
+    email: string
+  }
+  properties: {
+    id: string
+    title: string
+    rent: string
+    landlord: {
+      email: string
+    }
+    category: {
+      name: string
+    }
+  }
+}

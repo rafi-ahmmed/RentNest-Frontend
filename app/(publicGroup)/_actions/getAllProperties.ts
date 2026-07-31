@@ -33,7 +33,7 @@ export const getAllProperties = async (query: {
   const res = await fetch(
     `${process.env.BACKEND_API_URL}/api/properties?${params.toString()}`,
     {
-      cache: "no-cache",
+      cache: "force-cache",
       next: {
         revalidate: 60 * 60 * 6,
         tags: ["all-properties"],

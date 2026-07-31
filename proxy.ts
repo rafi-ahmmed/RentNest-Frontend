@@ -49,6 +49,7 @@ export function proxy(request: NextRequest) {
     (route) => pathname === route || pathname.startsWith(route + "/")
   )
 
+  //   *Role based dashboard access
   if (!accessToken && !isAuthRoute && !isPublicRoute) {
     const loginUrl = new URL("/login", request.url)
 

@@ -21,10 +21,10 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
-import { getMe } from "@/services/getme"
 import { IUser, UserRole } from "@/lib/types"
 import { Logout } from "@/app/(authGroup)/_actions/authActions"
 import { useRouter } from "next/navigation"
+import { toast } from "sonner"
 
 // Navigation Links Array
 const navLinks = [
@@ -64,6 +64,7 @@ function Navbar({ user }: { user: IUser }) {
 
     if (action === "logout") {
       await Logout()
+      toast.success("Logout Successfully!")
     }
 
     if (action === "dashboard") {
@@ -138,10 +139,13 @@ function Navbar({ user }: { user: IUser }) {
                 <DropdownMenuGroup>
                   <DropdownMenuLabel className="font-normal">
                     <div className="flex flex-col space-y-1">
-                      <p className="text-sm leading-none font-medium text-foreground">
-                        {user?.name || "User name"}
+                      <p className="text-sm leading-none font-medium text-foreground capitalize">
+                        {user?.name || "User name"}{" "}
+                        <span className="mr-0.5 capitalize">
+                          ({user.role === "USER" ? "Tenant" : user.role})
+                        </span>
                       </p>
-                      <p className="truncate text-xs leading-none text-muted-foreground">
+                      <p className="mt-0.5 truncate text-xs leading-none text-muted-foreground">
                         {user?.email || "siyam@example.com"}
                       </p>
                     </div>
@@ -175,7 +179,7 @@ function Navbar({ user }: { user: IUser }) {
                       <DropdownMenuItem
                         onClick={() => handleUserMenuAction(item.action)}
                         key={item.title}
-                        className="cursor-pointer p-1.5"
+                        className="cursor-pointer p-1.5 text-[15px]"
                       >
                         <Icon className={`h-4 w-4 ${item.iconColor}`} />
                         <span>{item.title}</span>
@@ -197,11 +201,13 @@ function Navbar({ user }: { user: IUser }) {
               </DropdownMenuContent>
             </DropdownMenu>
           ) : (
-            <Button className="gap-2 px-3.5 py-3.5 font-medium">
-              <Link href="/login" className="flex items-center gap-2">
-                Login
-              </Link>
-            </Button>
+            <>
+              <Button className="gap-2 px-3.5 py-3.5 font-medium">
+                <Link href="/login" className="flex items-center gap-2">
+                  Login
+                </Link>
+              </Button>
+            </>
           )}
 
           {/* Login Button */}
