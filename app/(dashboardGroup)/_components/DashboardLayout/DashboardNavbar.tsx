@@ -25,15 +25,7 @@ export function DashboardNavbar() {
         </Button>
       </div>
 
-      <div className="flex items-center gap-2">
-        <Button
-          variant="ghost"
-          size="icon"
-          className="h-8 w-8 text-muted-foreground hover:text-foreground"
-        >
-          <Bell className="h-4 w-4" />
-        </Button>
-
+      {/* <div className="flex items-center gap-2">
         <div className="flex items-center gap-2 border-l border-border pl-2">
           <div className="flex h-8 w-8 items-center justify-center rounded-full border border-primary/20 bg-primary/10 text-primary">
             <User className="h-4 w-4" />
@@ -42,7 +34,7 @@ export function DashboardNavbar() {
             Rafi Ahmmed
           </span>
         </div>
-      </div>
+      </div> */}
     </header>
   )
 }

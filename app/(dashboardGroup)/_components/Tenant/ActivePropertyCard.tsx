@@ -1,8 +1,6 @@
 "use client"
 
 import React from "react"
-import { LogOut } from "lucide-react"
-import { Button } from "@/components/ui/button"
 import { Card } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { RentalRequest } from "@/lib/types"
@@ -46,24 +44,6 @@ const ActivePropertyCard = ({ requests }: ActivePropertyCardProps) => {
                 {Number(activeProperty.properties.rent).toLocaleString()}
               </p>
             </div>
-
-            <Button
-              variant="destructive"
-              size="lg"
-              className="w-full gap-2 text-sm font-semibold shadow-md sm:w-auto"
-              onClick={() => {
-                if (
-                  confirm(
-                    `Are you sure you want to end your stay at "${activeProperty.properties.title}"?`
-                  )
-                ) {
-                  alert("Request sent to landlord to end lease.")
-                }
-              }}
-            >
-              <LogOut className="h-4 w-4" />
-              End Lease
-            </Button>
           </div>
         </Card>
       ))}

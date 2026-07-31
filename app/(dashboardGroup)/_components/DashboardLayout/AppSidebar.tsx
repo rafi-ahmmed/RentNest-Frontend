@@ -26,18 +26,22 @@ import {
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
 import { Logout } from "@/app/(authGroup)/_actions/authActions"
+import { ISidebarItem, IUser, UserRole } from "@/lib/types"
+import { sidebarMenuItems } from "../../_config/sidebarMenuItems"
 
-const items = [
-  { title: "Overview", url: "/dashboard", icon: LayoutDashboard },
-  { title: "My Properties", url: "/dashboard/properties", icon: Building2 },
-  { title: "Add Property", url: "/dashboard/add-property", icon: PlusCircle },
-  { title: "Tenants & Users", url: "/dashboard/users", icon: Users },
-  { title: "Settings", url: "/dashboard/settings", icon: Settings },
-]
-
-export function AppSidebar() {
+export function AppSidebar({ user }: { user: IUser }) {
   const pathname = usePathname()
   const router = useRouter()
+
+  let navItems: ISidebarItem[] = []
+
+  if (user.role === UserRole.USER) {
+    navItems = sidebarMenuItems.TENANT
+  } else if (user.role === UserRole.LANDLORD) {
+    navItems = sidebarMenuItems.LANDLORD
+  } else if (user.role === UserRole.ADMIN) {
+    navItems = sidebarMenuItems.ADMIN
+  }
 
   return (
     <Sidebar variant="sidebar" collapsible="offcanvas">
@@ -64,14 +68,17 @@ export function AppSidebar() {
           <SidebarGroupLabel>Menu</SidebarGroupLabel>
           <SidebarGroupContent>
             <SidebarMenu>
-              {items.map((item) => {
-                const isActive = pathname === item.url
+              {navItems.map((item) => {
+                const isActive = pathname === item.href
                 return (
-                  <SidebarMenuItem className="mt-1" key={item.title}>
-                    <SidebarMenuButton isActive={isActive} tooltip={item.title}>
-                      <Link href={item.url} className="flex items-center gap-3">
+                  <SidebarMenuItem className="mt-1" key={item.label}>
+                    <SidebarMenuButton isActive={isActive} tooltip={item.label}>
+                      <Link
+                        href={item.href}
+                        className="flex items-center gap-3"
+                      >
                         <item.icon className="h-4 w-4 shrink-0" />
-                        <span>{item.title}</span>
+                        <span>{item.label}</span>
                       </Link>
                     </SidebarMenuButton>
                   </SidebarMenuItem>

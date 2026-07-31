@@ -1,3 +1,6 @@
+import { LucideProps } from "lucide-react"
+import { ForwardRefExoticComponent, RefAttributes } from "react"
+
 export enum UserRole {
   ADMIN = "ADMIN",
   LANDLORD = "LANDLORD",
@@ -71,6 +74,39 @@ export interface RentalRequest {
     }
     category: {
       name: string
+    }
+  }
+}
+
+export type ISidebarItem = {
+  label: string
+  href: string
+  icon: ForwardRefExoticComponent<
+    Omit<LucideProps, "ref"> & RefAttributes<SVGSVGElement>
+  >
+}
+
+export interface PaymentRecord {
+  id: string
+  amount: string
+  transactionId: string
+  provider: string
+  method: string
+  status: string
+  tenantId: string
+  rentalRequestId: string
+  paidAt: string
+  rentalRequest: {
+    properties: {
+      title: string
+      rent: string
+      address: string
+      category: {
+        name: string
+      }
+      landlord: {
+        email: string
+      }
     }
   }
 }

@@ -12,8 +12,27 @@ export const getAllRentalRequest = async () => {
     },
     cache: "force-cache",
     next: {
-      revalidate: 60 * 60 * 6,
+      revalidate: 60 * 60 * 24 * 15,
       tags: ["tenant-requests"],
+    },
+  })
+
+  const result = await res.json()
+  return result
+}
+
+export const getPaymentHistory = async () => {
+  const cookieStored = cookies()
+  const accessToken = (await cookieStored).get("accessToken")?.value
+
+  const res = await fetch(`${process.env.BACKEND_API_URL}/api/payments`, {
+    headers: {
+      Cookie: `accessToken=${accessToken}`,
+    },
+    cache: "force-cache",
+    next: {
+      revalidate: 60 * 60 * 24 * 15,
+      tags: ["tenant-payments"],
     },
   })
 
