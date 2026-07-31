@@ -22,8 +22,9 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import { getMe } from "@/services/getme"
-import { IUser } from "@/lib/types"
+import { IUser, UserRole } from "@/lib/types"
 import { Logout } from "@/app/(authGroup)/_actions/authActions"
+import { useRouter } from "next/navigation"
 
 // Navigation Links Array
 const navLinks = [
@@ -43,14 +44,12 @@ const navLinks = [
 const dropdownItems = [
   {
     title: "Dashboard",
-    href: "/dashboard",
     icon: LayoutDashboard,
     iconColor: "text-primary",
     action: "dashboard",
   },
   {
     title: "Profile",
-    href: "/profile",
     icon: User,
     iconColor: "text-muted-foreground",
     action: "profile",
@@ -59,11 +58,22 @@ const dropdownItems = [
 
 function Navbar({ user }: { user: IUser }) {
   console.log("user profile==", user)
+  const router = useRouter()
   const handleUserMenuAction = async (action: string) => {
     console.log(action)
 
     if (action === "logout") {
       await Logout()
+    }
+
+    if (action === "dashboard") {
+      if (user.role === UserRole.USER) {
+        router.push("/dashboard")
+      } else if (user.role === UserRole.LANDLORD) {
+        router.push("/landlord-dashboard")
+      } else if (user.role === UserRole.ADMIN) {
+        router.push("/admin-dashboard")
+      }
     }
   }
 
@@ -165,15 +175,10 @@ function Navbar({ user }: { user: IUser }) {
                       <DropdownMenuItem
                         onClick={() => handleUserMenuAction(item.action)}
                         key={item.title}
-                        className="p-0"
+                        className="cursor-pointer p-1.5"
                       >
-                        <Link
-                          href={item.href}
-                          className="flex w-full cursor-pointer items-center gap-2 px-2 py-1.5"
-                        >
-                          <Icon className={`h-4 w-4 ${item.iconColor}`} />
-                          <span>{item.title}</span>
-                        </Link>
+                        <Icon className={`h-4 w-4 ${item.iconColor}`} />
+                        <span>{item.title}</span>
                       </DropdownMenuItem>
                     )
                   })}

@@ -20,13 +20,15 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { loginAction } from "../_actions/authActions"
 import { useTransition } from "react"
 import { toast } from "sonner"
-import { useRouter } from "next/navigation"
+import { useRouter, useSearchParams } from "next/navigation"
 
 type LoginFormData = z.infer<typeof loginSchema>
 
 export function LoginForm() {
   const [isPending, startTransition] = useTransition()
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const redirectTo = searchParams.get("redirectTo")!
   const {
     register,
     handleSubmit,
@@ -38,12 +40,11 @@ export function LoginForm() {
 
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     startTransition(async () => {
-      const result = await loginAction(data)
+      const result = await loginAction(data, redirectTo)
 
       if (result.success) {
         reset()
         toast.success("Login Completed")
-        router.replace("/")
       } else if (!result.success) {
         toast.error(result.message || "Something went wrong!")
       } else {

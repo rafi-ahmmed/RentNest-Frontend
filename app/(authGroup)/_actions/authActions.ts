@@ -1,8 +1,12 @@
 "use server"
 
+import { UserRole } from "@/lib/types"
 import { ILoginData, ISignupData } from "@/schemas/auth.schema"
+import { verifyTkn } from "@/utils/jwt"
+import { JwtPayload } from "jsonwebtoken"
 import { revalidateTag } from "next/cache"
 import { cookies } from "next/headers"
+import { redirect } from "next/navigation"
 
 export const signupAction = async (signupPayload: ISignupData) => {
   console.log(signupPayload)
@@ -29,14 +33,39 @@ export const signupAction = async (signupPayload: ISignupData) => {
 
   if (result?.success && result?.data) {
     const loginRes = await Login(payload?.email, payload?.password)
-   //  console.log(loginRes)
+    //  console.log(loginRes)
   }
 
   return result
 }
 
-export const loginAction = async (loginPayload: ILoginData) => {
+export const loginAction = async (
+  loginPayload: ILoginData,
+  redirectTo?: string
+) => {
   const result = await Login(loginPayload?.email, loginPayload?.password)
+
+  const decodedData = verifyTkn(
+    result.data.accessToken,
+    process.env.JWT_ACCESS_TKN_SECRET as string
+  )
+
+  if (
+    redirectTo &&
+    typeof redirectTo === "string" &&
+    redirectTo.startsWith("/") &&
+    !redirectTo.startsWith("//")
+  ) {
+    redirect(redirectTo)
+  }
+
+  if ((decodedData.data as JwtPayload).role === UserRole.USER) {
+    redirect("/dashboard", "replace")
+  } else if ((decodedData.data as JwtPayload).role === UserRole.LANDLORD) {
+    redirect("/landlord-dashboard", "replace")
+  } else if ((decodedData.data as JwtPayload).role === UserRole.ADMIN) {
+    redirect("/admin-dashboard", "replace")
+  }
 
   return result
 }

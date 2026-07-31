@@ -2,7 +2,7 @@
 
 import React from "react"
 import Link from "next/link"
-import { usePathname } from "next/navigation"
+import { usePathname, useRouter } from "next/navigation"
 import {
   LayoutDashboard,
   Building2,
@@ -25,6 +25,7 @@ import {
   SidebarMenuButton,
   SidebarMenuItem,
 } from "@/components/ui/sidebar"
+import { Logout } from "@/app/(authGroup)/_actions/authActions"
 
 const items = [
   { title: "Overview", url: "/dashboard", icon: LayoutDashboard },
@@ -36,21 +37,22 @@ const items = [
 
 export function AppSidebar() {
   const pathname = usePathname()
+  const router = useRouter()
 
   return (
     <Sidebar variant="sidebar" collapsible="offcanvas">
-      {/* 🏢 Header Logo Area */}
       <SidebarHeader className="flex h-16 items-center justify-center border-b border-sidebar-border px-4">
-        <Link href="/" className="flex w-full items-center gap-3">
-          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary font-bold text-primary-foreground shadow-xs">
-            <Building className="h-5 w-5" />
+        <Link href="/" className="group flex w-full items-center gap-2.5">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl bg-primary text-xl font-bold text-primary-foreground shadow-sm">
+            🏠
           </div>
+
           <div className="flex flex-col group-data-[collapsible=icon]:hidden">
-            <span className="text-base leading-tight font-extrabold tracking-tight text-foreground">
-              PropertyPro
+            <span className="text-lg leading-tight font-bold tracking-tight text-foreground">
+              Rent<span className="text-primary">Nest</span>
             </span>
             <span className="text-[10px] font-medium text-muted-foreground">
-              Admin Dashboard
+              Dashboard
             </span>
           </div>
         </Link>
@@ -87,6 +89,10 @@ export function AppSidebar() {
             <SidebarMenuButton
               className="text-muted-foreground transition-colors hover:bg-destructive/10 hover:text-destructive"
               tooltip="Logout"
+              onClick={async () => {
+                await Logout()
+                router.push("/login")
+              }}
             >
               <LogOut className="h-4 w-4" />
               <span>Logout</span>

@@ -1,9 +1,15 @@
+export enum UserRole {
+  ADMIN = "ADMIN",
+  LANDLORD = "LANDLORD",
+  USER = "USER",
+}
+
 export type IUser = {
   id: string
   name: string
   email: string
   image: string
-  role: "ADMIN" | "LANDLORD" | "TENANT"
+  role: "ADMIN" | "LANDLORD" | "USER"
   status: "ACTIVE" | "BLOCKED"
   createdAt: string
   updatedAt: string
