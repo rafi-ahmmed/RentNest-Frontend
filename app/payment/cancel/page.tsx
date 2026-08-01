@@ -2,6 +2,7 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent } from "@/components/ui/card"
 import { XCircle, ArrowRight, RefreshCw, AlertTriangle } from "lucide-react"
+import BackButton from "../_components/BackButton"
 
 export default function PaymentCancelPage() {
   return (
@@ -40,16 +41,7 @@ export default function PaymentCancelPage() {
         </Card>
 
         <div className="flex flex-col gap-3 pt-2 sm:flex-row">
-          <Button className="h-11 flex-1 cursor-pointer font-semibold">
-            <Link
-              href="/dashboard"
-              className="inline-flex items-center justify-center gap-2"
-            >
-              <RefreshCw className="h-4 w-4" />
-              <span>Try Again</span>
-              <ArrowRight className="h-4 w-4" />
-            </Link>
-          </Button>
+          <BackButton path="/dashboard" btnContent="Try again" />
         </div>
       </div>
     </div>

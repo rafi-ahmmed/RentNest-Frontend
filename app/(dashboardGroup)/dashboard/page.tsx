@@ -23,16 +23,18 @@ export default async function TenantRequestsPage() {
   console.log(requests)
 
   const { meta, data } = requests
-  console.log(data)
-  console.log(meta)
+  
 
   return (
     <div className="space-y-6">
-      {/* 📌 Header Title */}
-      <div>
-        <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
-          Rental Applications
-        </h1>
+
+
+      <div className="flex flex-col gap-1 border-b pb-5">
+        <div className="flex items-center gap-2">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            Rental Applications
+          </h1>
+        </div>
         <p className="text-sm text-muted-foreground">
           Manage your active stay, pay for approved requests, and track
           application status.

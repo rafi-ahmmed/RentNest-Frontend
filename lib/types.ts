@@ -137,3 +137,14 @@ export interface RentalRequestPayload {
   moveInDate: string
   message: string
 }
+
+export interface User {
+  id: string
+  name: string
+  email: string
+  image: string
+  role: "ADMIN" | "LANDLORD" | "USER"
+  status: "ACTIVE" | "BLOCKED"
+  createdAt: string
+  updatedAt: string
+}
