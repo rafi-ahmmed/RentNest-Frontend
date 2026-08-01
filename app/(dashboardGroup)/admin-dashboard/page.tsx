@@ -15,7 +15,7 @@ import {
   adminAllRentalRequest,
   adminGetAllProperties,
   adminGetAllUsers,
-} from "../_actions/adminAction"
+} from "../_actions/adminActions"
 
 export default async function AdminDashboardPage() {
   const [users, properties, requests] = await Promise.all([

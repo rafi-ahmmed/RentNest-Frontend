@@ -7,13 +7,15 @@ export enum UserRole {
   USER = "USER",
 }
 
+export type UserStatus = "ACTIVE" | "BAN"
+
 export type IUser = {
   id: string
   name: string
   email: string
   image: string
-  role: "ADMIN" | "LANDLORD" | "USER"
-  status: "ACTIVE" | "BLOCKED"
+  role: UserRole
+  status: UserStatus
   createdAt: string
   updatedAt: string
 }
@@ -22,6 +24,11 @@ export type IUserResponse = {
   success: boolean
   message: string
   data: IUser
+}
+
+export interface IUpdateUserStatus {
+  id: string
+  status: UserStatus
 }
 
 export interface ErrorProps {
@@ -40,7 +47,7 @@ export interface ICategoryResponse {
   data: ICategory[]
 }
 
-interface ApiResponse {
+export interface ApiResponse {
   success: boolean
   message: string
   meta: {
@@ -58,20 +65,26 @@ export interface RentalRequest {
   message: string
   moveInDate: string
   status: "APPROVED" | "ACTIVE" | "COMPLETED" | "PENDING" | "REJECTED" | string
+
   tenantId: string
   propertyId: string
+
   createdAt: string
   updatedAt: string
+
   tenant: {
     email: string
   }
+
   properties: {
     id: string
     title: string
     rent: string
+
     landlord: {
       email: string
     }
+
     category: {
       name: string
     }
@@ -93,17 +106,22 @@ export interface PaymentRecord {
   provider: string
   method: string
   status: string
+
   tenantId: string
   rentalRequestId: string
+
   paidAt: string
+
   rentalRequest: {
     properties: {
       title: string
       rent: string
       address: string
+
       category: {
         name: string
       }
+
       landlord: {
         email: string
       }
@@ -115,18 +133,26 @@ export interface Property {
   id: string
   title: string
   description: string
+
   rent: string
   size: string
+
   bedroom: number
   bathroom: number
+
   location: string
   address: string
+
   amenities: string[]
+
   images: string[]
+
   iaAvailable: boolean
+
   category: {
     name: string
   }
+
   landlord: {
     email: string
   }
@@ -136,15 +162,4 @@ export interface RentalRequestPayload {
   propertyId: string
   moveInDate: string
   message: string
-}
-
-export interface User {
-  id: string
-  name: string
-  email: string
-  image: string
-  role: "ADMIN" | "LANDLORD" | "USER"
-  status: "ACTIVE" | "BLOCKED"
-  createdAt: string
-  updatedAt: string
 }

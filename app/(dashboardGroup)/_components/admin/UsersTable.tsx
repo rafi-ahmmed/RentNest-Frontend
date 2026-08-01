@@ -16,15 +16,52 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { IUser } from "@/lib/types"
-import { Eye, UserX } from "lucide-react"
+import { IUpdateUserStatus, IUser } from "@/lib/types"
+import { Eye, Loader2, UserX } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
 import UserDetailsModal from "./UserDetailsModal"
+import { useMutation } from "@tanstack/react-query"
+import { adminUpdateUserStatus } from "../../_actions/adminActions"
+import { toast } from "sonner"
+import { formatDate } from "@/lib/utils"
 
 const UsersTable = ({ users }: { users: IUser[] }) => {
   const [open, setOpen] = useState(false)
   const [selectedUser, setSelectedUser] = useState<IUser | null>(null)
+
+  const mutation = useMutation({
+    mutationFn: (payload: IUpdateUserStatus) => {
+      console.log("payload=", payload)
+      return adminUpdateUserStatus(payload)
+    },
+
+    onSuccess: (data) => {
+      console.log(data)
+      setOpen(false)
+      if (data.success) {
+        toast.success(data.message || "Status Updated!")
+      } else {
+        toast.error(data.message || "Something went wrong")
+      }
+    },
+
+    onError: (error) => {
+      console.log(error)
+      toast.error(error.message || "Something went wrong")
+    },
+  })
+
+  const handleUserStatus = (status: "ACTIVE" | "BAN", userId: string) => {
+    if (!status) {
+      return null
+    }
+    const payload: IUpdateUserStatus = {
+      status,
+      id: userId,
+    }
+    mutation.mutate(payload)
+  }
 
   return (
     <>
@@ -109,8 +146,16 @@ const UsersTable = ({ users }: { users: IUser[] }) => {
                         </Badge>
                       </TableCell>
 
-                      <TableCell>
-                        <Select value={user.status}>
+                      <TableCell className="flex items-center gap-1">
+                        <Select
+                          onValueChange={(value) =>
+                            handleUserStatus(
+                              value as "ACTIVE" | "BAN",
+                              user.id!
+                            )
+                          }
+                          value={user.status}
+                        >
                           <SelectTrigger className="h-8 w-27.5 text-xs font-semibold">
                             <SelectValue placeholder="Status" />
                           </SelectTrigger>
@@ -122,7 +167,7 @@ const UsersTable = ({ users }: { users: IUser[] }) => {
                               Active
                             </SelectItem>
                             <SelectItem
-                              value="BLOCKED"
+                              value="BAN"
                               className="text-xs font-medium text-rose-600"
                             >
                               Blocked
@@ -132,11 +177,7 @@ const UsersTable = ({ users }: { users: IUser[] }) => {
                       </TableCell>
 
                       <TableCell className="text-xs text-muted-foreground">
-                        {new Date(user.createdAt).toLocaleDateString("en-US", {
-                          year: "numeric",
-                          month: "short",
-                          day: "numeric",
-                        })}
+                        {formatDate(user.createdAt)}
                       </TableCell>
 
                       <TableCell className="pr-6 text-right">

@@ -1,4 +1,33 @@
+"use server"
+import { IUpdateUserStatus } from "@/lib/types"
+import { revalidateTag } from "next/cache"
 import { cookies } from "next/headers"
+
+export const adminUpdateUserStatus = async (payload: IUpdateUserStatus) => {
+  const cookieStored = cookies()
+  const accessToken = (await cookieStored).get("accessToken")?.value
+  const { id, status } = payload
+
+  const res = await fetch(
+    `${process.env.BACKEND_API_URL}/api/admin/users/${id}`,
+    {
+      method: "PATCH",
+      headers: {
+        "content-type": "application/json",
+        Cookie: `accessToken=${accessToken}`,
+      },
+      body: JSON.stringify({ status }),
+    }
+  )
+
+  const result = await res.json()
+  if (result.success && result?.data) {
+    revalidateTag("admin-allUsers", {
+      expire: 0,
+    })
+  }
+  return result
+}
 
 export const adminAllRentalRequest = async () => {
   const cookieStored = cookies()
@@ -38,6 +67,11 @@ export const adminGetAllProperties = async () => {
   )
 
   const result = await res.json()
+  if (result.success && result?.data) {
+    revalidateTag("admin-allUsers", {
+      expire: 0,
+    })
+  }
   return result
 }
 

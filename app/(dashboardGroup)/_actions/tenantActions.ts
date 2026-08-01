@@ -15,6 +15,15 @@ export async function paymentSuccessRevalidate() {
   revalidateTag("tenant-payments", {
     expire: 0,
   })
+  revalidateTag("admin-tenant-requests", {
+    expire: 0,
+  })
+  revalidateTag("admin-allProperties", {
+    expire: 0,
+  })
+  revalidateTag("admin-allUsers", {
+    expire: 0,
+  })
 }
 
 export const createPayment = async (requestId: string) => {
