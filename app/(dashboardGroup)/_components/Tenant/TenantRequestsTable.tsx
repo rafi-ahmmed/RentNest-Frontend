@@ -23,9 +23,11 @@ import {
   Sparkles,
   XCircle,
 } from "lucide-react"
-import { useState } from "react"
+import { useState, useTransition } from "react"
 import DetailsModal from "./DetailsModal"
 import { formatDate } from "@/lib/utils"
+import { createPayment } from "../../_actions/tenantActions"
+import { toast } from "sonner"
 
 interface ActivePropertyCardProps {
   requests: RentalRequest[]
@@ -36,6 +38,16 @@ const TenantRequestsTable = ({ requests }: ActivePropertyCardProps) => {
   const [selectedRequest, setSelectedRequest] = useState<RentalRequest | null>(
     null
   )
+  const [isPending, startTransition] = useTransition()
+
+  const handlePayNow = (requestId: string) => {
+    startTransition(async () => {
+      const result = await createPayment(requestId)
+      if (!result.success) {
+        toast.error(result.message)
+      }
+    })
+  }
 
   return (
     <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
@@ -73,7 +85,6 @@ const TenantRequestsTable = ({ requests }: ActivePropertyCardProps) => {
                 key={req.id}
                 className="border-b border-border/60 transition-colors hover:bg-muted/40"
               >
-                
                 <TableCell className="px-5 py-4" title={req.id}>
                   <div className="flex items-center gap-1.5 font-mono text-sm font-medium text-muted-foreground">
                     <BadgeCheck className="h-4 w-4 shrink-0 text-emerald-500" />
@@ -81,14 +92,10 @@ const TenantRequestsTable = ({ requests }: ActivePropertyCardProps) => {
                   </div>
                 </TableCell>
 
-               
                 <TableCell className="px-5 py-4">
                   <div className="flex items-center gap-2 text-sm font-medium text-foreground">
                     <Mail className="h-4 w-4 shrink-0 text-muted-foreground" />
-                    <span>
-                     
-                      {req.properties?.landlord?.email || "N/A"}
-                    </span>
+                    <span>{req.properties?.landlord?.email || "N/A"}</span>
                   </div>
                 </TableCell>
 
@@ -196,14 +203,10 @@ const TenantRequestsTable = ({ requests }: ActivePropertyCardProps) => {
                       <Button
                         size="sm"
                         className="h-8 w-32 justify-center gap-1.5 bg-blue-600 px-3 text-xs font-medium text-white shadow-xs hover:bg-blue-700"
-                        onClick={() =>
-                          alert(
-                            `Redirecting to payment for ${req.properties.title}`
-                          )
-                        }
+                        onClick={() => handlePayNow(req.id)}
                       >
                         <CreditCard className="h-3.5 w-3.5" />
-                        Pay Now
+                        {isPending ? "Processing" : "Pay Now"}
                       </Button>
                     )}
 

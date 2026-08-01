@@ -99,7 +99,9 @@ const PaymentInvoiceModal = ({
           <div className="space-y-2 border-t pt-3">
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Rent Price</span>
-              <span className="font-medium">৳{payment?.amount}</span>
+              <span className="font-medium">
+                ৳ ৳{Number(payment?.amount) / 100}
+              </span>
             </div>
             <div className="flex justify-between text-sm">
               <span className="text-muted-foreground">Processing Fee</span>
@@ -108,7 +110,7 @@ const PaymentInvoiceModal = ({
             <div className="flex items-center justify-between border-t pt-2 text-base font-bold">
               <span>Total Paid</span>
               <span className="text-emerald-600 dark:text-emerald-400">
-                ৳{payment?.amount}
+                ৳{Number(payment?.amount) / 100}
               </span>
             </div>
           </div>

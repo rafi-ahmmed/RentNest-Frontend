@@ -1,6 +1,11 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-
-import { CheckCircle2, CreditCard, DollarSign, Receipt } from "lucide-react"
+import {
+  CheckCircle2,
+  CreditCard,
+  DollarSign,
+  History,
+  Receipt,
+} from "lucide-react"
 import PaymentHistoryTable from "../../_components/Tenant/PaymentHistoryTable"
 import { getPaymentHistory } from "../../_actions/tenantActions"
 
@@ -8,13 +13,26 @@ const PaymentHistory = async () => {
   const paymentData = await getPaymentHistory()
   const { meta, data } = paymentData
 
-  const totalPaidAmount = data.reduce(
+  const totalPaidAmount = (data || []).reduce(
     (sum, item) => sum + Number(item.amount) / 100,
     0
   )
 
   return (
     <div className="space-y-6">
+     
+      <div className="flex flex-col gap-1 border-b pb-5">
+        <div className="flex items-center gap-2">
+          <h1 className="text-2xl font-bold tracking-tight text-foreground sm:text-3xl">
+            Payment History
+          </h1>
+        </div>
+        <p className="text-sm text-muted-foreground">
+          View and manage all your past rental payments and transaction
+          invoices.
+        </p>
+      </div>
+
       {/* Summary Cards */}
       <div className="grid gap-4 md:grid-cols-3">
         <Card className="border-border/60 bg-card shadow-xs">
@@ -43,7 +61,7 @@ const PaymentHistory = async () => {
           </CardHeader>
           <CardContent>
             <div className="text-2xl font-bold text-foreground">
-              {meta?.total || "N/A"}
+              {meta?.total ?? "N/A"}
             </div>
             <p className="mt-1 text-xs text-muted-foreground">
               Successful payments completed
