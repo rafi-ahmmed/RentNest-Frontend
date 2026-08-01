@@ -27,6 +27,7 @@ export default async function AdminDashboardPage() {
   const { meta: usermeta } = users
   const { meta: propertymeta } = properties
   const { meta: requestmeta } = requests
+  console.log(requestmeta)
 
   return (
     <div className="space-y-8 p-1 sm:p-4">
@@ -144,8 +145,6 @@ export default async function AdminDashboardPage() {
             </CardContent>
           </Card>
 
-          {/* Approved */}
-
           {/* Active */}
           <Card className="border-l-4 border-border/60 border-l-emerald-500 bg-card shadow-xs">
             <CardHeader className="flex flex-row items-center justify-between pb-2">
@@ -174,7 +173,7 @@ export default async function AdminDashboardPage() {
             </CardHeader>
             <CardContent>
               <div className="text-2xl font-bold text-foreground">
-                {requestmeta.complete || "0"}
+                {requestmeta.completed || "0"}
               </div>
               <p className="mt-1 text-[11px] text-muted-foreground">
                 Lease finished / Closed

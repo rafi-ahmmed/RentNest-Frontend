@@ -4,7 +4,7 @@ import UsersTable from "../../_components/admin/UsersTable"
 
 export default async function ManageUsersPage() {
   const users = await adminGetAllUsers()
-console.log(users)
+// console.log(users)
   return (
     <div className="space-y-6 p-1 sm:p-4">
       {/* Header */}

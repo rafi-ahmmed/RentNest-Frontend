@@ -28,6 +28,7 @@ import {
 import { Logout } from "@/app/(authGroup)/_actions/authActions"
 import { ISidebarItem, IUser, UserRole } from "@/lib/types"
 import { sidebarMenuItems } from "../../_config/sidebarMenuItems"
+import { toast } from "sonner"
 
 export function AppSidebar({ user }: { user: IUser }) {
   const pathname = usePathname()
@@ -35,11 +36,11 @@ export function AppSidebar({ user }: { user: IUser }) {
 
   let navItems: ISidebarItem[] = []
 
-  if (user.role === UserRole.USER) {
+  if (user?.role === UserRole.USER) {
     navItems = sidebarMenuItems.TENANT
-  } else if (user.role === UserRole.LANDLORD) {
+  } else if (user?.role === UserRole.LANDLORD) {
     navItems = sidebarMenuItems.LANDLORD
-  } else if (user.role === UserRole.ADMIN) {
+  } else if (user?.role === UserRole.ADMIN) {
     navItems = sidebarMenuItems.ADMIN
   }
 

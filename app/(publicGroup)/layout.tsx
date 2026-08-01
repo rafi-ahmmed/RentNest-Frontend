@@ -2,6 +2,7 @@ import Footer from "@/components/shared/Footer"
 import Navbar from "@/components/shared/Navbar"
 import { getMe } from "@/services/getme"
 import React, { ReactNode } from "react"
+import { toast } from "sonner"
 
 const publicLayout = async ({ children }: { children: ReactNode }) => {
   const user = await getMe()

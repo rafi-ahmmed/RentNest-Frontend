@@ -163,3 +163,26 @@ export interface RentalRequestPayload {
   moveInDate: string
   message: string
 }
+export interface Category {
+  name: string
+}
+export interface LandlordProperty {
+  title: string
+  description: string
+  rent: number
+  size: string
+  bedroom: number
+  bathroom: number
+  location: string
+  address: string
+  amenities: string[]
+  images: string[]
+  categoryId: string
+}
+
+export interface Category {
+  id: string
+  name: string
+}
+
+

@@ -17,7 +17,7 @@ import {
   TableRow,
 } from "@/components/ui/table"
 import { IUpdateUserStatus, IUser } from "@/lib/types"
-import { Eye, Loader2, UserX } from "lucide-react"
+import { Eye, UserX } from "lucide-react"
 import Image from "next/image"
 import { useState } from "react"
 import UserDetailsModal from "./UserDetailsModal"

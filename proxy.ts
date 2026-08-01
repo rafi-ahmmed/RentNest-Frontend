@@ -3,12 +3,13 @@ import type { NextRequest } from "next/server"
 import { verifyTkn } from "./utils/jwt"
 import { JwtPayload } from "jsonwebtoken"
 import { UserRole } from "./lib/types"
-import { redirect } from "next/navigation"
+import { cookies } from "next/headers"
 
 const AUTH_ROUTES = ["/login", "/signup"]
 const PUBLIC_ROUTES = ["/", "/properties", "/properties/*"]
 
 export function proxy(request: NextRequest) {
+  const cookieStore = cookies()
   const pathname = request.nextUrl.pathname
 
   const accessToken = request.cookies.get("accessToken")?.value
@@ -21,9 +22,15 @@ export function proxy(request: NextRequest) {
   )
 
   const decodedRefreshToken = verifyTkn(
-    accessToken as string,
+    refreshToken as string,
     process.env.JWT_REFRESH_TKN_SECRET as string
   )
+
+  if (!decodedAccessToken.success) {
+    const response = NextResponse.next()
+    response.cookies.delete("accessToken")
+    return response
+  }
 
   if (decodedAccessToken.success && decodedAccessToken.data) {
     userRole = (decodedAccessToken.data as JwtPayload).role as string
@@ -32,11 +39,11 @@ export function proxy(request: NextRequest) {
   // * Stop users to access login or signup if they are already login
   if (accessToken && AUTH_ROUTES.includes(pathname)) {
     if (userRole === UserRole.USER) {
-      return NextResponse.redirect(new URL("/dashboard", request.url))
+      return NextResponse.redirect(new URL("/", request.url))
     } else if (userRole === UserRole.LANDLORD) {
-      return NextResponse.redirect(new URL("/landlord-dashboard", request.url))
+      return NextResponse.redirect(new URL("/", request.url))
     } else if (userRole === UserRole.ADMIN) {
-      return NextResponse.redirect(new URL("/admin-dashboard", request.url))
+      return NextResponse.redirect(new URL("/", request.url))
     }
   }
 

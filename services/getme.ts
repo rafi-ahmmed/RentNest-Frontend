@@ -3,6 +3,7 @@
 import { cookies } from "next/headers"
 import Jwt from "jsonwebtoken"
 import { verifyTkn } from "@/utils/jwt"
+import { Logout } from "@/app/(authGroup)/_actions/authActions"
 
 export const getMe = async () => {
   const getStored = await cookies()

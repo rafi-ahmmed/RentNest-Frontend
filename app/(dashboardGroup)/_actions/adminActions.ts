@@ -25,6 +25,9 @@ export const adminUpdateUserStatus = async (payload: IUpdateUserStatus) => {
     revalidateTag("admin-allUsers", {
       expire: 0,
     })
+    revalidateTag("my-profile", {
+      expire: 0,
+    })
   }
   return result
 }
@@ -67,11 +70,6 @@ export const adminGetAllProperties = async () => {
   )
 
   const result = await res.json()
-  if (result.success && result?.data) {
-    revalidateTag("admin-allUsers", {
-      expire: 0,
-    })
-  }
   return result
 }
 

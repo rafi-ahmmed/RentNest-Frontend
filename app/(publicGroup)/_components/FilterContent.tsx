@@ -18,16 +18,7 @@ import { ICategory, ICategoryResponse } from "@/lib/types"
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 import { Input } from "@/components/ui/input"
 import { useDebouncedCallback } from "use-debounce"
-
-const AMENITIES_LIST = [
-  "Parking",
-  "Generator",
-  "Security",
-  "Elevator",
-  "Garden",
-  "Balcony",
-  "Wifi",
-]
+import { AVAILABLE_AMENITIES } from "@/app/(dashboardGroup)/_config/availableAmenities"
 
 export function FilterContent({
   categories,
@@ -182,7 +173,7 @@ export function FilterContent({
           Amenities
         </Label>
         <div className="space-y-2">
-          {AMENITIES_LIST.map((amenity) => (
+          {AVAILABLE_AMENITIES.map((amenity) => (
             <div key={amenity} className="flex items-center space-x-2 text-sm">
               <Checkbox
                 className={"cursor-pointer"}
