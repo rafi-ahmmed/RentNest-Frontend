@@ -99,36 +99,6 @@ export type ISidebarItem = {
   >
 }
 
-export interface PaymentRecord {
-  id: string
-  amount: string
-  transactionId: string
-  provider: string
-  method: string
-  status: string
-
-  tenantId: string
-  rentalRequestId: string
-
-  paidAt: string
-
-  rentalRequest: {
-    properties: {
-      title: string
-      rent: string
-      address: string
-
-      category: {
-        name: string
-      }
-
-      landlord: {
-        email: string
-      }
-    }
-  }
-}
-
 export interface Property {
   id: string
   title: string
@@ -163,10 +133,35 @@ export interface RentalRequestPayload {
   moveInDate: string
   message: string
 }
+
+export interface LandlordProperty {
+  id: string
+  title: string
+  description: string
+  rent: string
+  size: string
+  bedroom: number
+  bathroom: number
+  location: string
+  address: string
+  amenities: string[]
+  images: string[]
+  iaAvailable: boolean
+  landlordId: string
+  categoryId: string
+  createdAt: string
+  updatedAt: string
+  category: {
+    name: string
+  }
+}
+
 export interface Category {
+  id: string
   name: string
 }
-export interface LandlordProperty {
+
+export interface ICreatePropertyPayload {
   title: string
   description: string
   rent: number
@@ -180,9 +175,27 @@ export interface LandlordProperty {
   categoryId: string
 }
 
-export interface Category {
+export interface IPaymentRecord {
   id: string
-  name: string
+  amount: string
+  transactionId: string
+  provider: string
+  method: string
+  status: "COMPLETED" | "PENDING" | "FAILED" | string
+  tenantId: string
+  rentalRequestId: string
+  paidAt: string
+
+  rentalRequest: {
+    properties: {
+      title: string
+      address: string
+      category: {
+        name: string
+      }
+      landlord: {
+        email: string
+      }
+    }
+  }
 }
-
-

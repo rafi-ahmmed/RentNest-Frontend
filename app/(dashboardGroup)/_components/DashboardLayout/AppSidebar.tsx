@@ -28,7 +28,7 @@ import {
 import { Logout } from "@/app/(authGroup)/_actions/authActions"
 import { ISidebarItem, IUser, UserRole } from "@/lib/types"
 import { sidebarMenuItems } from "../../_config/sidebarMenuItems"
-import { toast } from "sonner"
+
 
 export function AppSidebar({ user }: { user: IUser }) {
   const pathname = usePathname()

@@ -16,7 +16,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 
-import { Category, LandlordProperty } from "@/lib/types"
+import { Category, ICreatePropertyPayload, LandlordProperty } from "@/lib/types"
 import { AVAILABLE_AMENITIES } from "../../_config/availableAmenities"
 import { createProperty } from "../../_actions/landlordActions"
 import { toast } from "sonner"
@@ -58,7 +58,7 @@ export default function CreatePropertyForm({
       return
     }
 
-    const payload: LandlordProperty = {
+    const payload: ICreatePropertyPayload = {
       ...data,
       categoryId: selectedCategory,
       rent: Number(data.rent),

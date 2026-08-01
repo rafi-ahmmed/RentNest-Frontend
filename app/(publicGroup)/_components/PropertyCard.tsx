@@ -42,7 +42,6 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
   return (
     <Card className="group flex flex-col justify-between overflow-hidden border border-border/60 bg-card p-0 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl">
-      {/* 🖼️ Image Section */}
       <div className="relative h-52 w-full overflow-hidden bg-muted">
         <Image
           src={mainImage}
@@ -54,10 +53,8 @@ export function PropertyCard({ property }: PropertyCardProps) {
           loading="eager"
         />
 
-        {/* Gradient Overlay for better text contrast */}
         <div className="absolute inset-0 bg-linear-to-t from-black/60 via-transparent to-black/20" />
 
-        {/* Category Badge on Image Top-Left */}
         <Badge
           variant="secondary"
           className="absolute top-3 left-3 bg-background/80 font-medium text-foreground capitalize shadow-sm backdrop-blur-md"
@@ -65,7 +62,6 @@ export function PropertyCard({ property }: PropertyCardProps) {
           {property.category?.name || "Property"}
         </Badge>
 
-        {/* Location Tag on Image Bottom */}
         <div className="absolute right-3 bottom-3 left-3 flex items-center gap-1.5 text-xs text-white/90">
           <MapPin className="h-3.5 w-3.5 shrink-0 text-green-400 drop-shadow" />
           <span className="truncate drop-shadow-sm">
@@ -76,7 +72,6 @@ export function PropertyCard({ property }: PropertyCardProps) {
 
       <CardHeader className="p-4 pb-2">
         <div className="flex items-center justify-between gap-2">
-          {/* Title on Left */}
           <h3 className="line-clamp-1 text-base font-bold text-foreground transition-colors group-hover:text-primary">
             {property.title}
           </h3>
@@ -117,7 +112,6 @@ export function PropertyCard({ property }: PropertyCardProps) {
           </div>
         </div>
 
-        {/* Amenities Badges */}
         {property.amenities && property.amenities.length > 0 && (
           <div className="flex flex-wrap gap-1.5">
             {property.amenities.map((amenity, index) => (
@@ -133,7 +127,6 @@ export function PropertyCard({ property }: PropertyCardProps) {
         )}
       </CardContent>
 
-      {/* 💳 Footer: Price & Details Link */}
       <CardFooter className="mt-auto flex items-center justify-between border-t border-border/50 bg-muted/20 p-4 pt-3">
         <div>
           <span className="block text-[10px] font-semibold tracking-wider text-muted-foreground uppercase">

@@ -8,15 +8,17 @@ import {
 } from "lucide-react"
 import PaymentHistoryTable from "../../_components/Tenant/PaymentHistoryTable"
 import { getPaymentHistory } from "../../_actions/tenantActions"
+import { IPaymentRecord } from "@/lib/types"
 
 const PaymentHistory = async () => {
-  const paymentData = await getPaymentHistory()
-  const { meta, data } = paymentData
+ const paymentData = await getPaymentHistory()
 
-  const totalPaidAmount = (data || []).reduce(
-    (sum, item) => sum + Number(item.amount) / 100,
-    0
-  )
+ const { meta, data } = paymentData
+
+ const totalPaidAmount = (data || []).reduce(
+   (sum: number, item: IPaymentRecord) => sum + Number(item.amount) / 100,
+   0
+ )
 
   return (
     <div className="space-y-6">

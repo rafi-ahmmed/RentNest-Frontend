@@ -1,6 +1,6 @@
 "use server"
 
-import { LandlordProperty } from "@/lib/types"
+import { ICreatePropertyPayload, LandlordProperty } from "@/lib/types"
 import { revalidateTag } from "next/cache"
 import { cookies } from "next/headers"
 
@@ -48,7 +48,7 @@ export const getLandlordProperties = async () => {
   return result
 }
 
-export const createProperty = async (propertyPayload: LandlordProperty) => {
+export const createProperty = async (propertyPayload: ICreatePropertyPayload) => {
   const cookieStored = cookies()
   const accessToken = (await cookieStored).get("accessToken")?.value
 

@@ -6,7 +6,8 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { PaymentRecord } from "@/lib/types"
+import { IPaymentRecord } from "@/lib/types"
+
 import { formatDate } from "@/lib/utils"
 import { Calendar, CheckCircle2, MapPin, Receipt, User } from "lucide-react"
 
@@ -17,7 +18,7 @@ const PaymentInvoiceModal = ({
 }: {
   open: boolean
   onOpenChange: (open: boolean) => void
-  payment: PaymentRecord | null
+  payment: IPaymentRecord | null
 }) => {
   if (!payment) return null
   console.log(payment)

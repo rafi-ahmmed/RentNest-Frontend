@@ -9,18 +9,21 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table"
-import { PaymentRecord } from "@/lib/types"
+
 import { BadgeCheck, Calendar, CheckCircle2, Eye, Mail } from "lucide-react"
 import { useState } from "react"
 import PaymentInvoiceModal from "./PaymentInvoiceModal"
+import { IPaymentRecord } from "@/lib/types"
 
 interface PaymentHistoryProps {
-  payments: PaymentRecord[]
+  payments: IPaymentRecord[]
 }
 
 const PaymentHistoryTable = ({ payments }: PaymentHistoryProps) => {
   const [open, setOpen] = useState(false)
-  const [selectedPayment, setSelectedPayment] = useState({})
+  const [selectedPayment, setSelectedPayment] = useState<IPaymentRecord | null>(
+    null
+  )
 
   return (
     <div className="overflow-hidden rounded-xl border border-border bg-card shadow-xs">
@@ -51,7 +54,7 @@ const PaymentHistoryTable = ({ payments }: PaymentHistoryProps) => {
           </TableRow>
         </TableHeader>
         <TableBody>
-          {payments.map((payment: PaymentRecord) => {
+          {payments.map((payment: IPaymentRecord) => {
             const paidAmount = Number(payment.amount) / 100
 
             return (

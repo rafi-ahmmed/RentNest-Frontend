@@ -4,14 +4,15 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/ui/dialog"
-import { User } from "@/lib/types"
+import { IUser } from "@/lib/types"
+
 import { Calendar, CheckCircle2, Mail, Shield, UserIcon } from "lucide-react"
 import Image from "next/image"
 
 type UserDetailsModalProps = {
   open: boolean
   setOpen: (open: boolean) => void
-  selectedUser: User | null
+  selectedUser: IUser | null
 }
 
 const UserDetailsModal = ({

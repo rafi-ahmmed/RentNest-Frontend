@@ -11,7 +11,7 @@ const publicLayout = async ({ children }: { children: ReactNode }) => {
     <div>
       <Navbar user={user} />
 
-      <section className="container mx-auto min-h-[calc(100vh-387px)]">
+      <section className=" mx-auto min-h-[calc(100vh-387px)]">
         {children}
       </section>
       <Footer />
