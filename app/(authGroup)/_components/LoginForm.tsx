@@ -41,6 +41,7 @@ export function LoginForm() {
   const onSubmit: SubmitHandler<LoginFormData> = async (data) => {
     startTransition(async () => {
       const result = await loginAction(data, redirectTo)
+      
 
       if (result.success) {
         reset()

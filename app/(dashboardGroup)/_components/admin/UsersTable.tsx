@@ -32,12 +32,12 @@ const UsersTable = ({ users }: { users: IUser[] }) => {
 
   const mutation = useMutation({
     mutationFn: (payload: IUpdateUserStatus) => {
-      console.log("payload=", payload)
+      // console.log("payload=", payload)
       return adminUpdateUserStatus(payload)
     },
 
     onSuccess: (data) => {
-      console.log(data)
+      // console.log(data)
       setOpen(false)
       if (data.success) {
         toast.success(data.message || "Status Updated!")

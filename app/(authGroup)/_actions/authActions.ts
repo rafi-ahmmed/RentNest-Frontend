@@ -9,7 +9,7 @@ import { cookies } from "next/headers"
 import { redirect } from "next/navigation"
 
 export const signupAction = async (signupPayload: ISignupData) => {
-  console.log(signupPayload)
+  // console.log(signupPayload)
 
   const payload = {
     name: signupPayload.name,
@@ -18,7 +18,7 @@ export const signupAction = async (signupPayload: ISignupData) => {
     image: signupPayload.imageUrl,
   }
 
-  console.log(payload)
+  // console.log(payload)
 
   const res = await fetch(`${process.env.BACKEND_API_URL}/api/auth/register`, {
     method: "POST",
@@ -29,7 +29,7 @@ export const signupAction = async (signupPayload: ISignupData) => {
   })
 
   const result = await res.json()
-  console.log("SignUp---", result)
+  // console.log("SignUp---", result)
 
   if (result?.success && result?.data) {
     const loginRes = await Login(payload?.email, payload?.password)
@@ -44,6 +44,12 @@ export const loginAction = async (
   redirectTo?: string
 ) => {
   const result = await Login(loginPayload?.email, loginPayload?.password)
+
+  if (!result.success) {
+    return result
+  }
+
+  // console.log(result)
 
   const decodedData = verifyTkn(
     result.data.accessToken,

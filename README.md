@@ -289,7 +289,7 @@ API_INTEGRATION.md
 ## Contact
 
 **Live URL:**
-[Live Site](https://your-live-url.com)
+[Live Site](https://rent-nest-frontend-beta.vercel.app/)
 
 **Email:**
 [rafi.ahmmed920@gmail.com](mailto:rafi.ahmmed920@gmail.com)

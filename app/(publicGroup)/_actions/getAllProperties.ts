@@ -3,7 +3,7 @@
 export const getAllProperties = async (query: {
   [key: string]: string | string[] | undefined
 }) => {
-  console.log("query==", query)
+  // console.log("query==", query)
   const { searchTerm, location, minPrice, maxPrice, amenities, type } = query
 
   const params = new URLSearchParams()
@@ -12,7 +12,7 @@ export const getAllProperties = async (query: {
     params.set("searchTerm", searchTerm as string)
   }
   if (location) {
-    console.log(location)
+    // console.log(location)
     params.set("location", location as string)
   }
   if (minPrice) {
@@ -28,7 +28,7 @@ export const getAllProperties = async (query: {
     params.set("type", type as string)
   }
 
-  console.log("final params=", params.toString())
+  // console.log("final params=", params.toString())
 
   const res = await fetch(
     `${process.env.BACKEND_API_URL}/api/properties?${params.toString()}`,

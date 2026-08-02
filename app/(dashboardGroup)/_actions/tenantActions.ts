@@ -53,9 +53,9 @@ export const createPayment = async (requestId: string) => {
   })
 
   const result = await res.json()
-  console.log(result)
+  // console.log(result)
   if (result.success && result?.data?.checkOutUrl) {
-    redirect(result.data.checkOutUrl)
+    redirect(result.data.checkOutUrl, "replace")
   }
   return result
 }
@@ -115,6 +115,12 @@ export const createRentalReq = async (payload: RentalRequestPayload) => {
 
   if (result.success && result.data) {
     revalidateTag("tenant-requests", {
+      expire: 0,
+    })
+    revalidateTag("landlord-requests", {
+      expire: 0,
+    })
+    revalidateTag("admin-tenant-requests", {
       expire: 0,
     })
   }

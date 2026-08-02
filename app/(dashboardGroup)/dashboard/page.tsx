@@ -20,7 +20,7 @@ interface ApiResponse {
 
 export default async function TenantRequestsPage() {
   const requests = await getAllRentalRequest()
-  console.log(requests)
+  // console.log(requests)
 
   const { meta, data } = requests
   

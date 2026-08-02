@@ -19,6 +19,8 @@ import { Card, CardContent } from "@/components/ui/card"
 import { Separator } from "@/components/ui/separator"
 import { getPropertyById } from "../../_actions/getPropertyById"
 import RequestBookingButton from "../../_components/RequestBookingButton"
+import { getMe } from "@/services/getme"
+import { IUser } from "@/lib/types"
 
 interface Review {
   rating: number
@@ -31,6 +33,8 @@ interface PropertyDetailsProps {
 
 const PropertyDetails = async ({ params }: PropertyDetailsProps) => {
   const { id } = await params
+  const user: IUser = await getMe()
+  // console.log(user)
 
   const response = await getPropertyById(id)
   const property = response?.data
@@ -62,7 +66,6 @@ const PropertyDetails = async ({ params }: PropertyDetailsProps) => {
   return (
     <div className="min-h-screen bg-background py-8">
       <div className="container mx-auto max-w-6xl space-y-8 px-4">
-        {/* Navigation & Actions Bar */}
         <div className="flex items-center justify-between">
           <Button
             variant="ghost"
@@ -88,18 +91,20 @@ const PropertyDetails = async ({ params }: PropertyDetailsProps) => {
           </div> */}
         </div>
 
-        {/* Image Gallery Grid */}
         <div className="grid h-87.5 grid-cols-1 gap-4 overflow-hidden rounded-2xl shadow-xs md:h-105 md:grid-cols-3">
+          {/* Main Image */}
           <div className="relative h-full bg-muted md:col-span-2">
             <Image
               src={mainImage}
               alt={property.title}
               fill
+              sizes="(max-width: 768px) 100vw, 66vw"
               className="object-cover"
               priority
             />
           </div>
 
+          {/* Gallery Images */}
           <div className="hidden h-full grid-rows-2 gap-4 md:grid">
             {galleryImages.length > 0 ? (
               galleryImages.map((img: string, idx: number) => (
@@ -111,6 +116,7 @@ const PropertyDetails = async ({ params }: PropertyDetailsProps) => {
                     src={img}
                     alt={`${property.title} ${idx + 2}`}
                     fill
+                    sizes="(max-width: 768px) 0vw, 33vw"
                     className="object-cover transition-transform duration-300 hover:scale-105"
                   />
                 </div>
@@ -122,7 +128,6 @@ const PropertyDetails = async ({ params }: PropertyDetailsProps) => {
             )}
           </div>
         </div>
-
         {/* Main Details & Booking Sidebar */}
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div className="space-y-6 lg:col-span-2">
@@ -322,7 +327,7 @@ const PropertyDetails = async ({ params }: PropertyDetailsProps) => {
                   </span>
                 </div>
 
-                <RequestBookingButton property={property} />
+                <RequestBookingButton property={property} user={user} />
 
                 <p className="text-center text-[11px] text-muted-foreground">
                   You won&apos;t be charged yet

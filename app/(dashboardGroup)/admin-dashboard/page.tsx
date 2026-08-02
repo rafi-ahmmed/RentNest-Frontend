@@ -27,7 +27,7 @@ export default async function AdminDashboardPage() {
   const { meta: usermeta } = users
   const { meta: propertymeta } = properties
   const { meta: requestmeta } = requests
-  console.log(requestmeta)
+  // console.log(requestmeta)
 
   return (
     <div className="space-y-8 p-1 sm:p-4">

@@ -1,6 +1,6 @@
 "use server"
 
-import { ICreatePropertyPayload, LandlordProperty } from "@/lib/types"
+import { ICreatePropertyPayload } from "@/lib/types"
 import { revalidateTag } from "next/cache"
 import { cookies } from "next/headers"
 
@@ -65,7 +65,7 @@ export const createProperty = async (propertyPayload: ICreatePropertyPayload) =>
   )
 
   const result = await res.json()
-  console.log(result)
+  // console.log(result)
   if (result.success && result.data) {
     revalidateTag("landlord-properties", {
       expire: 0,
@@ -118,6 +118,6 @@ export const updateRequestStatus = async (payload: {
       expire: 0,
     })
   }
-  console.log(result)
+  // console.log(result)
   return result
 }

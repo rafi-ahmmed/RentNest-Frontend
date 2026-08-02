@@ -39,7 +39,7 @@ export function PropertyCard({ property }: PropertyCardProps) {
     property.images && property.images.length > 0
       ? property.images[0]
       : fallbackImage
-
+  // console.log(property)
   return (
     <Card className="group flex flex-col justify-between overflow-hidden border border-border/60 bg-card p-0 transition-all duration-300 hover:-translate-y-1 hover:border-primary/40 hover:shadow-xl">
       <div className="relative h-52 w-full overflow-hidden bg-muted">

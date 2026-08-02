@@ -46,7 +46,7 @@ export function FilterContent({
   }, 500)
 
   const handleAmenities = (amenity: string, checked: boolean) => {
-    console.log(amenity, checked)
+    // console.log(amenity, checked)
     let updateAmenities: string[]
 
     if (checked) {

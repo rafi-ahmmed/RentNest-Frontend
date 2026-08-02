@@ -62,11 +62,9 @@ const RentalRequestModal = ({
       }
 
       if (onSubmit) {
-      //   console.log("btn==", payload)
+      
         await onSubmit(payload)
-      } else {
-        console.log(payload)
-      }
+      } 
 
       reset()
     } catch (error) {

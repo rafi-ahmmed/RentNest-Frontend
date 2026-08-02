@@ -21,7 +21,7 @@ const PaymentInvoiceModal = ({
   payment: IPaymentRecord | null
 }) => {
   if (!payment) return null
-  console.log(payment)
+  // console.log(payment)
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
