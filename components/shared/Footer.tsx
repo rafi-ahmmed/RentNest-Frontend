@@ -96,7 +96,7 @@ function Footer() {
             </ul>
           </div>
 
-          {/* Column 4: Why Choose Us / Value Highlights */}
+         
           <div className="flex flex-col space-y-3">
             <h3 className="text-sm font-semibold tracking-wider text-foreground uppercase">
               Why RentNest
@@ -118,7 +118,7 @@ function Footer() {
           </div>
         </div>
 
-        {/* Bottom Section: Copyright & Legal */}
+       
         <div className="mt-12 flex flex-col items-center justify-between gap-4 border-t border-border/50 pt-6 text-xs text-muted-foreground sm:flex-row">
           <p className="flex items-center gap-1 text-center sm:text-left">
             © {new Date().getFullYear()} RentNest.
